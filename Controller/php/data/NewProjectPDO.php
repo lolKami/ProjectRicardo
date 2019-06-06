@@ -32,5 +32,20 @@ class NewProjectPDO extends Connection{
         echo json_encode("ERROR");
         }
     }
+    public static function select(){
+        $query = "SELECT * FROM project";
+        self::getConexion();
+        $result = self::$Connection->prepare($query);
+        $result->execute();
+        
+        if ($result->execute()) {
+           while ($row = $result->fetch()) {
+             $datos[] = $row;
+           }
+           echo json_encode($datos); 
+        }else{
+            echo json_encode("ERROR");
+        }
+    }  
 }
 ?>
