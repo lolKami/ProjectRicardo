@@ -1,7 +1,6 @@
 <?php
 
 class Project{
-
     private $ID;
     private $PROJECT_NAME;
     private $COST;
@@ -48,4 +47,5 @@ public function getID(){
 		$this->END_DATE = $END_DATE;
 	}
 }
+
 ?>

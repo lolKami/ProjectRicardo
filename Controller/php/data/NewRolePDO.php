@@ -1,7 +1,7 @@
 <?php
 include '../config/db_con.php';
-include '../entities/Project.php';
-class NewProjectPDO extends Connection{
+include '../entities/role.php';
+class NewRolePDO extends Connection{
     protected static $Connection;
 
     private static function getConnection()
@@ -13,17 +13,14 @@ class NewProjectPDO extends Connection{
     {
         self::$Connection = null;
     }   
-    public static function registerProject($ObjectProject){
-        $query = "INSERT INTO project (PROJECT_NAME,COST,CREATION_DATE,END_DATE)
-         VALUES (:PROJECT_NAME,:COST,:CREATION_DATE,:END_DATE)";
+   
+    public static function registerRole($ObjectRole){
+        $query = "INSERT INTO role (DESCRIPTION) VALUES (:DESCRIPTION)";
 
         self::getConnection();
         $result = self::$Connection->prepare($query);
 
-        $result->bindValue(":PROJECT_NAME", $ObjectProject->getPROJECT_NAME());
-        $result->bindValue(":COST", $ObjectProject->getCOST());
-        $result->bindValue(":CREATION_DATE", $ObjectProject->getCREATION_DATE());
-        $result->bindValue(":END_DATE", $ObjectProject->getEND_DATE());
+        $result->bindValue(':DESCRIPTION', $ObjectRole->getDESCRIPTION());
 
         if ($result->execute()) {
             echo json_encode("OK");
@@ -32,8 +29,10 @@ class NewProjectPDO extends Connection{
         }
         self::disconnect();
     }
-    public static function selectProject(){
-        $query = "SELECT * FROM project";
+
+
+    public static function selectRol(){
+        $query = "SELECT * FROM role";
         self::getConnection();
         $result = self::$Connection->prepare($query);
         $result->execute();
@@ -48,13 +47,11 @@ class NewProjectPDO extends Connection{
         }
         self::disconnect();
     }
-    public static function RemoveProject($ObjectProject){
-       $query = "DELETE FROM project  WHERE ID = (:ID)";
-
+    public static function RemoveRol($ObjectRole){
+        $query = "DELETE FROM role  WHERE ID_ROLE = (:ID_ROLE)";
         self::getConnection();
         $result = self::$Connection->prepare($query);
-
-        $result->bindValue(":ID", $ObjectProject->getID());
+        $result->bindValue(":ID_ROLE", $ObjectRole->getID_ROLE());
         if ($result->execute()) {
             echo json_encode("ELIMINADO");
         }else{
@@ -62,11 +59,11 @@ class NewProjectPDO extends Connection{
         } 
         self::disconnect();
     }
-    public static function ShowDataProject($ObjectProject){
-       $query = "SELECT * FROM project WHERE ID = (:ID)";
+    public static function ShowDataRol($ObjectRole){
+       $query = "SELECT * FROM role WHERE ID_ROLE = (:ID_ROLE)";
        self::getConnection();
        $result = self::$Connection->prepare($query);
-       $result->bindValue(":ID", $ObjectProject->getID());
+       $result->bindValue(":ID_ROLE", $ObjectRole->getID_ROLE());
        if ($result->execute()) {
            while ($row = $result->fetch()) {
              $data[] = $row;
@@ -77,21 +74,13 @@ class NewProjectPDO extends Connection{
         }
         self::disconnect();
     }
-    public static function EditProject($ObjectProject){
-        $query = "UPDATE project 
-        SET PROJECT_NAME = (:PROJECT_NAME),
-         COST = (:COST),
-         CREATION_DATE = (:CREATION_DATE),
-         END_DATE = (:END_DATE) WHERE ID = (:ID)";
+    public static function EditRol($ObjectRole){
+        $query = "UPDATE role SET DESCRIPTION = (:DESCRIPTION)
+         WHERE role.ID_ROLE = (:ID_ROLE)";
         self::getConnection();
         $result = self::$Connection->prepare($query);
-        $result->bindValue(":ID", $ObjectProject->getID());
-        $result->bindValue(":PROJECT_NAME", $ObjectProject->getPROJECT_NAME());
-        $result->bindValue(":COST", $ObjectProject->getCOST());
-        $result->bindValue(":CREATION_DATE", $ObjectProject->getCREATION_DATE());
-        $result->bindValue(":END_DATE", $ObjectProject->getEND_DATE());
-        $result->execute();
-        
+        $result->bindValue(":ID_ROLE", $ObjectRole->getID_ROLE());
+        $result->bindValue(":DESCRIPTION", $ObjectRole->getDESCRIPTION());       
         if ($result->execute()) {
            echo json_encode("OK"); 
         }else{
@@ -99,6 +88,7 @@ class NewProjectPDO extends Connection{
         }
         self::disconnect();
     }
+
 }
    
 ?>
